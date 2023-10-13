@@ -1,0 +1,47 @@
+{
+  "name": "Todo5 Reminder",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "description": "Sync with your Google calendar events for in-browser reminders.",
+  "homepage_url": "http://github.com/nstielau/todo5",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "default_locale": "en",
+  "background": {
+    "service_worker": "src/bg/background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "notifications",
+    "tabs",
+    "identity"
+  ],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtT/q/42O8UfvqqKsqbUd6fE7JF3c2lZjdKRGtxd5mWi3jm1NN5Z8XP+X7G8S9kKyO7MdHYaxzHyOizY20BCIFx/YHvUSz2r9GjWiI3bB+JrYO+kwZ+OZWSz/Rj+if75cPKxPRHGYZ0VsSx6eDRuhHqb9eAFJ9Gf/J4+HYXqQtEPRON7i/pTA9ugFDBLzcQ8KxOJRisLcHZOBt+8UbPE4RBSyKciHLF8S9inMjTqLE3B6hJjbSaH0iUmxEL82y/UI94YD/ILSz4jRP2cq0QzxNlWKZRAGZc9SN0wT97T9Wqjs+zHZQxBkpKJdfaczZmMoTkVKt20UjM/07RbYDr2r4wIDAQAB",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*/*"
+      ],
+      "css": [
+        "src/inject/inject.css"
+      ]
+    },
+    {
+      "matches": [
+        "https://*/*"
+      ],
+      "js": [
+        "src/inject/inject.js"
+      ]
+    }
+  ],
+  "oauth2": {
+    "client_id": "491406573957-ansb2ugecp9hs8hi6o182b907lpflvc5.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar.readonly"
+    ]
+  }
+}

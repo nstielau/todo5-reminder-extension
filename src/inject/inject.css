@@ -1,0 +1,41 @@
+div#todo5_header {
+    background: linear-gradient(90deg, #e3ffe7aa 0%, #d9e7ffaa 100%);
+    filter: drop-shadow(0 0 0.5rem white);
+    border-radius: 10px;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 100%;
+    padding: 0px;
+    font-family: Google Sans,Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+}
+
+div#todo5_header div.todo5_event {
+    padding: 10px;
+    color: #555555;
+}
+
+div#todo5_header h1 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 600;
+    font-family: Google Sans,Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    display: inline;
+}
+
+div#todo5_header a {
+    padding: 15px;
+    font-weight: 600;
+}
+
+div#todo5_header a:hover {
+    color: #333333;
+    padding: 15px;
+    cursor: pointer;
+}
+
+div#todo5_header a.close {
+    float: right;
+}
