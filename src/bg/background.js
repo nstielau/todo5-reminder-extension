@@ -86,7 +86,7 @@ function debug() {
 }
 
 // Check for upcoming calendar events every 5 minutes
-setInterval(fetchCalendarEvents, 60*5*1000);
+setInterval(fetchCalendarEvents, 5*60*1000);
 fetchCalendarEvents();
 
 // Check for in progress events every 10 seconds
