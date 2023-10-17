@@ -96,7 +96,6 @@ notifyTabsAboutInProgressEvents();
 // Print Debug info periodically
 setInterval(debug, 10*1000);
 
-
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     console.log(sender.tab ?
