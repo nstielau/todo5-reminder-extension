@@ -15,7 +15,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (!header) {
         return
     }
+
     var inProgressEvents = message['inProgressEvents'];
+
+    removeOldReminders(inProgressEvents);
+
     if (inProgressEvents && inProgressEvents.length > 0) {
         for (i in inProgressEvents) {
             if (!document.getElementById(inProgressEvents[i].id)) {
@@ -57,3 +61,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 
+function removeOldReminders(events) {
+  const inProgressEventsIdDict = {};
+  for (const event of events) {
+    if (event.hasOwnProperty('id')) {
+      inProgressEventsIdDict[event.id] = true;
+    }
+  }
+
+  const elements = document.getElementsByClassName("todo5_event");
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    if (!inProgressEventsIdDict[element.dataset.eid]) {
+        console.log("Removing stale reminder", element.dataset.eid);
+        element.parentNode.removeChild(element);
+    }
+  }
+}
