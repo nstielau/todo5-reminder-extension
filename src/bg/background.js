@@ -60,17 +60,19 @@ function notifyTabsAboutInProgressEvents() {
         chrome.tabs.query({active: true}, tabs => {
             console.log("Found these active tabs", tabs);
             const activeTab = tabs[0];
-                if (activeTab) {
+            if (activeTab) {
                 console.log("Sending to tab '" + activeTab['title'] + "'");
                 const response = chrome.tabs.sendMessage(activeTab.id, {
                     inProgressEvents: inProgressEvents
-                }).then(
-                    function(value){console.log("Success msging tab!", value)},
-                    function(error){
+            }).then(
+                function(value){console.log("Success msging tab!", value)},
+                function(error){
+                    // Don't reload chrome:// URLs
+                    if (activeTab.url.startsWith("http")) {
                         console.log("Error msging tab, trying to reload!", error);
                         chrome.tabs.reload(activeTab.id);
                     }
-                );
+                });
             }
         });
     }
