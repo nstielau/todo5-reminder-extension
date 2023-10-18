@@ -1,3 +1,9 @@
+// https://stackoverflow.com/questions/66618136/persistent-service-worker-in-chrome-extension
+const keepAlive = () => setInterval(chrome.runtime.getPlatformInfo, 20e3);
+chrome.runtime.onStartup.addListener(keepAlive);
+keepAlive();
+
+
 var upcomingEvents = [];
 var mutedEventsIds = {};
 
