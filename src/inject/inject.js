@@ -3,10 +3,22 @@ var readyStateCheckInterval = setInterval(function() {
         clearInterval(readyStateCheckInterval);
         console.log("Todo5: Calendar extension registered on this page");
         var todo5_header = document.createElement("div");
-        todo5_header.id = "todo5_header"
+        todo5_header.id = "todo5_header";
+        todo5_header.addEventListener("dblclick", todo5_header_click);
         document.body.prepend(todo5_header);
     }
 }, 100);
+
+function todo5_header_click(event) {
+
+    var header = document.getElementById('todo5_header');
+    console.log("header", header, header.style.width);
+    if (header.style.bottom == "0px") {
+        header.style.bottom = "auto";
+    } else {
+        header.style.bottom = "0px";
+    }
+}
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log('Todo5: Received message from background script', message)

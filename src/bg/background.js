@@ -1,3 +1,5 @@
+import { getInProgressEvents } from './library.js';
+
 // https://stackoverflow.com/questions/66618136/persistent-service-worker-in-chrome-extension
 const keepAlive = () => setInterval(chrome.runtime.getPlatformInfo, 20e3);
 chrome.runtime.onStartup.addListener(keepAlive);
@@ -38,29 +40,9 @@ function fetchCalendarEvents() {
     });
 }
 
-function getInProgressEvents() {
-    // Look 2 mins ino the future
-    const now = new Date(Date.now() + 2*60*1000);
-
-    return upcomingEvents.filter(event => {
-        if (mutedEventsIds[event.id]) {
-            return false;
-        }
-        if (event.status == "cancelled") {
-            return false;
-        }
-        if (!event || !event.start || !event.end) {
-            console.log("no start", event);
-            return false;
-        }
-        const eventStartTime = new Date(event.start.dateTime);
-        const eventEndTime = new Date(event.end.dateTime);
-        return eventStartTime < now && eventEndTime > now;
-    });
-}
 
 function notifyTabsAboutInProgressEvents() {
-    const inProgressEvents = getInProgressEvents();
+    const inProgressEvents = getInProgressEvents(upcomingEvents, mutedEventsIds);
     if (inProgressEvents.length > 0) {
         // console.log("In progress events", inProgressEvents)
         chrome.tabs.query({active: true}, tabs => {
@@ -86,14 +68,11 @@ function notifyTabsAboutInProgressEvents() {
 
 function debug() {
     console.log("Upcoming events", upcomingEvents);
-    // upcomingEvents.forEach((event, i) => {
-    //     console.log(event.summary, event.start.dateTime)
-    // });
     console.log("mutedEventsIds", mutedEventsIds);
-    console.log("inProgressEvents", getInProgressEvents())
+    console.log("inProgressEvents", getInProgressEvents(upcomingEvents, mutedEventsIds))
 }
 
-// Check for upcoming calendar events every 5 minutes
+// Check API for upcoming calendar events every 5 minutes
 setInterval(fetchCalendarEvents, 5*60*1000);
 fetchCalendarEvents();
 
