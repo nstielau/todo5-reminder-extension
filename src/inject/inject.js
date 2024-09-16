@@ -79,11 +79,10 @@ function removeOldReminders(events) {
   }
 
   const elements = document.getElementsByClassName("todo5_event");
-  for (const i = 0; i < elements.length; i++) {
-    const element = elements[i];
+  Array.from(elements).forEach(element => {
     if (!inProgressEventsIdDict[element.dataset.eid]) {
-        console.log("Removing stale reminder", element.dataset.eid);
-        element.parentNode.removeChild(element);
+      console.log("Removing stale reminder", element.dataset.eid);
+      element.parentNode.removeChild(element);
     }
-  }
+  });
 }
