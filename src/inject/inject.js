@@ -79,7 +79,7 @@ function removeOldReminders(events) {
   }
 
   const elements = document.getElementsByClassName("todo5_event");
-  for (const i = 0; i < elements.length; i++) {
+  for (let i = 0; i < elements.length; i++) {
     const element = elements[i];
     if (!inProgressEventsIdDict[element.dataset.eid]) {
         console.log("Removing stale reminder", element.dataset.eid);
