@@ -33,17 +33,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     removeOldReminders(inProgressEvents);
 
     if (inProgressEvents && inProgressEvents.length > 0) {
-        for (const i in inProgressEvents) {
-            if (!document.getElementById(inProgressEvents[i].id)) {
+        for (const event of inProgressEvents) {
+            if (!document.getElementById(event.id)) {
                 const eventNode = document.createElement("div");
                 const h1Node = document.createElement("h1");
-                const textnode = document.createTextNode(inProgressEvents[i].summary);
+                const textnode = document.createTextNode(event.summary);
                 eventNode.classList.add('todo5_event');
-                eventNode.id = inProgressEvents[i].id;
-                eventNode.dataset.eid = inProgressEvents[i].id;
+                eventNode.id = event.id;
+                eventNode.dataset.eid = event.id;
                 eventNode.appendChild(h1Node);
                 h1Node.appendChild(textnode);
-                if (inProgressEvents[i].hangoutLink) {
+                if (event.hangoutLink) {
                     const linkNode = document.createElement("a");
                     linkNode.setAttribute('target', '_blank');
                     linkNode.setAttribute('href', inProgressEvents[i].hangoutLink);
@@ -55,7 +55,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 const closeNode = document.createElement("a");
                 const closeTextnode = document.createTextNode("Close");
                 closeNode.appendChild(closeTextnode);
-                closeNode.dataset.eid = inProgressEvents[i].id;
+                closeNode.dataset.eid = event.id;
                 closeNode.classList.add('close');
                 closeNode.addEventListener('click', function(clickEvent) {
                     console.log("Todo5: Handling click on banner");
@@ -66,7 +66,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 eventNode.appendChild(closeNode);
                 document.getElementById("todo5_header").appendChild(eventNode);
                 document.getElementById("todo5_header").style.display = "block";
-                console.log("Todo5: Added event banner", inProgressEvents[i])
+                console.log("Todo5: Added event banner", event)
             }
         }
     }
