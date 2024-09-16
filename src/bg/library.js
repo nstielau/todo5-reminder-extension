@@ -1,3 +1,11 @@
+/**
+ * Filters and returns events that are currently in progress.
+ * Excludes events that are muted, cancelled, or declined by the user.
+ *
+ * @param {Array} events - List of calendar events.
+ * @param {Object} mutedEventsIds - Dictionary of muted event IDs.
+ * @returns {Array} - List of in-progress events.
+ */
 export function getInProgressEvents(events, mutedEventsIds) {
     // Look 2 mins into the future
     const now = new Date(Date.now() + 2 * 60 * 1000);

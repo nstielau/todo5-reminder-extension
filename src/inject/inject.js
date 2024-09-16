@@ -9,6 +9,11 @@ let readyStateCheckInterval = setInterval(() => {
     }
 }, 100);
 
+/**
+ * Toggles the position of the todo5 header between the top and bottom of the page.
+ *
+ * @param {Event} event - The double-click event.
+ */
 function todo5_header_click(event) {
 
     const header = document.getElementById('todo5_header');
@@ -20,6 +25,13 @@ function todo5_header_click(event) {
     }
 }
 
+/**
+ * Listens for messages from the background script and updates the UI with in-progress events.
+ *
+ * @param {Object} message - The message received from the background script.
+ * @param {Object} sender - The sender of the message.
+ * @param {Function} sendResponse - Function to send a response back to the sender.
+ */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log('Todo5: Received message from background script', message);
 
@@ -73,6 +85,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 
+/**
+ * Removes reminders for events that are no longer in progress.
+ *
+ * @param {Array} events - List of in-progress events.
+ */
 function removeOldReminders(events) {
   const inProgressEventsIdDict = {};
   for (const event of events) {
