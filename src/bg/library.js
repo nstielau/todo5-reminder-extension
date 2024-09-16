@@ -13,7 +13,7 @@ export function getInProgressEvents(events, mutedEventsIds) {
             console.warn("In-progress event apparently without start or end", event);
             return false;
         }
-        if (event.attendees?.some(attendee => attendee.self && attendee.responseStatus == "declined")) {
+        if (event.attendees?.some(attendee => attendee.self && attendee.responseStatus === "declined")) {
             return false;
         }
         const eventStartTime = new Date(event.start.dateTime);
