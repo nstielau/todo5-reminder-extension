@@ -44,24 +44,25 @@ function fetchCalendarEvents() {
 function notifyTabsAboutInProgressEvents() {
     const inProgressEvents = getInProgressEvents(upcomingEvents, mutedEventsIds);
     if (inProgressEvents.length > 0) {
-        // console.log("In progress events", inProgressEvents)
+        // Query all activen tabs
         chrome.tabs.query({active: true}, tabs => {
-            console.log("Found these active tabs", tabs);
-            const activeTab = tabs[0];
-            if (activeTab) {
-                console.log("Sending to tab '" + activeTab['title'] + "'");
-                const response = chrome.tabs.sendMessage(activeTab.id, {
-                    inProgressEvents: inProgressEvents
-            }).then(
-                function(value){console.log("Success msging tab!", value)},
-                function(error){
-                    // Don't reload chrome:// URLs
-                    if (activeTab.url.startsWith("http")) {
-                        console.log("Error msging tab, trying to reload!", error);
-                        chrome.tabs.reload(activeTab.id);
-                    }
-                });
-            }
+            console.log("Found these tabs", tabs);
+            tabs.forEach(tab => {
+                if (tab.url && tab.url.startsWith("http")) {  // Only message tabs with HTTP/HTTPS URLs
+                    console.log("Sending to tab '" + tab.title + "'");
+                    chrome.tabs.sendMessage(tab.id, {
+                        inProgressEvents: inProgressEvents
+                    }).then(
+                        function(value) {
+                            console.log("Success messaging tab!", value);
+                        },
+                        function(error) {
+                            console.log("Error messaging tab, trying to reload!", error);
+                            chrome.tabs.reload(tab.id);
+                        }
+                    );
+                }
+            });
         });
     }
 }
