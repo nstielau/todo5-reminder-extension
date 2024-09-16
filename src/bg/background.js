@@ -21,7 +21,7 @@ function fetchCalendarEvents() {
           timeMin: new Date().toISOString(),
           timeMax: new Date(Date.now() + 60*60*24*1000).toISOString()
         });
-        const apiUrl = 'https://www.googleapis.com/calendar/v3/calendars/primary/events?'+params.toString();
+        const apiUrl = `https://www.googleapis.com/calendar/v3/calendars/primary/events?${params.toString()}`;
         fetch(apiUrl, {
           headers: {
             'Authorization': `Bearer ${token}`
