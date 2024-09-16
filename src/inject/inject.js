@@ -37,24 +37,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             if (!document.getElementById(event.id)) {
                 const eventNode = document.createElement("div");
                 const h1Node = document.createElement("h1");
-                const textnode = document.createTextNode(event.summary);
+                h1Node.textContent = event.summary;
                 eventNode.classList.add('todo5_event');
                 eventNode.id = event.id;
                 eventNode.dataset.eid = event.id;
                 eventNode.appendChild(h1Node);
-                h1Node.appendChild(textnode);
                 if (event.hangoutLink) {
                     const linkNode = document.createElement("a");
                     linkNode.setAttribute('target', '_blank');
-                    linkNode.setAttribute('href', inProgressEvents[i].hangoutLink);
-                    const linkTextnode = document.createTextNode("Join Video");
-                    linkNode.appendChild(linkTextnode);
+                    linkNode.setAttribute('href', event.hangoutLink);
+                    linkNode.textContent = "Join Video";
                     eventNode.appendChild(linkNode);
                 }
 
                 const closeNode = document.createElement("a");
-                const closeTextnode = document.createTextNode("Close");
-                closeNode.appendChild(closeTextnode);
+                closeNode.textContent = "Close";
                 closeNode.dataset.eid = event.id;
                 closeNode.classList.add('close');
                 closeNode.addEventListener('click', (clickEvent) => {
