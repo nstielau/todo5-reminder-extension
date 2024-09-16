@@ -1,8 +1,8 @@
-var readyStateCheckInterval = setInterval(function() {
+const readyStateCheckInterval = setInterval(function() {
     if (document.readyState === "complete") {
         clearInterval(readyStateCheckInterval);
         console.log("Todo5: Calendar extension registered on this page");
-        var todo5_header = document.createElement("div");
+        const todo5_header = document.createElement("div");
         todo5_header.id = "todo5_header";
         todo5_header.addEventListener("dblclick", todo5_header_click);
         document.body.prepend(todo5_header);
@@ -11,7 +11,7 @@ var readyStateCheckInterval = setInterval(function() {
 
 function todo5_header_click(event) {
 
-    var header = document.getElementById('todo5_header');
+    const header = document.getElementById('todo5_header');
     console.log("header", header, header.style.width);
     if (header.style.bottom == "0px") {
         header.style.bottom = "auto";
@@ -23,17 +23,17 @@ function todo5_header_click(event) {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log('Todo5: Received message from background script', message)
 
-    var header = document.getElementById("todo5_header");
+    const header = document.getElementById("todo5_header");
     if (!header) {
         return
     }
 
-    var inProgressEvents = message['inProgressEvents'];
+    const inProgressEvents = message['inProgressEvents'];
 
     removeOldReminders(inProgressEvents);
 
     if (inProgressEvents && inProgressEvents.length > 0) {
-        for (i in inProgressEvents) {
+        for (const i in inProgressEvents) {
             if (!document.getElementById(inProgressEvents[i].id)) {
                 const eventNode = document.createElement("div");
                 const h1Node = document.createElement("h1");
