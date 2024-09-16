@@ -7,8 +7,8 @@ chrome.runtime.onStartup.addListener(keepAlive);
 keepAlive();
 
 
-let upcomingEvents = [];
-let mutedEventsIds = {};
+const upcomingEvents = [];
+const mutedEventsIds = {};
 
 console.log("Initiating Todo5 Calendar Extension Service Worker");
 
