@@ -47,7 +47,7 @@ function notifyTabsAboutInProgressEvents() {
         chrome.tabs.query({active: true}, tabs => {
             console.log("Found these tabs", tabs);
             tabs.forEach(tab => {
-                if (tab.url && tab.url.startsWith("http")) {  // Only message tabs with HTTP/HTTPS URLs
+                if (tab.url?.startsWith("http")) {  // Only message tabs with HTTP/HTTPS URLs
                     console.log(`Sending to tab '${tab.title}'`);
                     chrome.tabs.sendMessage(tab.id, {
                         inProgressEvents: inProgressEvents
