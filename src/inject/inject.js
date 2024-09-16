@@ -33,7 +33,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     removeOldReminders(inProgressEvents);
 
     if (inProgressEvents && inProgressEvents.length > 0) {
-        for (const event of inProgressEvents) {
+        inProgressEvents.forEach(event => {
             if (!document.getElementById(event.id)) {
                 const eventNode = document.createElement("div");
                 const h1Node = document.createElement("h1");
@@ -65,7 +65,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 document.getElementById("todo5_header").style.display = "block";
                 console.log("Todo5: Added event banner", event)
             }
-        }
+        });
     }
 });
 
