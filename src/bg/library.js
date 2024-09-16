@@ -10,7 +10,7 @@ export function getInProgressEvents(events, mutedEventsIds) {
             return false;
         }
         if (!event || !event.start || !event.end) {
-            console.log("no start", event);
+            console.warn("In-progress event apparently without start or end", event);
             return false;
         }
         if (event.attendees) {
