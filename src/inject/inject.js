@@ -42,13 +42,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 eventNode.id = event.id;
                 eventNode.dataset.eid = event.id;
                 eventNode.appendChild(h1Node);
-                if (event?.hangoutLink) {
-                    const linkNode = document.createElement("a");
-                    linkNode.setAttribute('target', '_blank');
-                    linkNode.setAttribute('href', event.hangoutLink);
-                    linkNode.textContent = "Join Video";
-                    eventNode.appendChild(linkNode);
+                if (event.description) {
+                    const descriptionNode = document.createElement("p");
+                    descriptionNode.innerHTML = event.description.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+                    eventNode.appendChild(descriptionNode);
                 }
+                const linkNode = document.createElement("a");
+                linkNode.setAttribute('target', '_blank');
+                linkNode.setAttribute('href', event.hangoutLink);
+                linkNode.textContent = "Join Video";
+                eventNode.appendChild(linkNode);
 
                 const closeNode = document.createElement("a");
                 closeNode.textContent = "Close";
