@@ -1,4 +1,4 @@
-const readyStateCheckInterval = setInterval(function() {
+let readyStateCheckInterval = setInterval(function() {
     if (document.readyState === "complete") {
         clearInterval(readyStateCheckInterval);
         console.log("Todo5: Calendar extension registered on this page");
