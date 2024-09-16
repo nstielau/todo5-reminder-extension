@@ -30,10 +30,8 @@ function fetchCalendarEvents() {
         .then(response => response.json())
         .then(data => {
             upcomingEvents = data.items.filter(event => {
-                return event.status != "cancelled";
-            }).sort(function(a, b){
-                return a.start.dateTime > b.start.dateTime
-            });
+                return event.status !== "cancelled";
+            }).sort((a, b) => a.start.dateTime > b.start.dateTime);
         })
         .catch(error => {
             console.error(error);
