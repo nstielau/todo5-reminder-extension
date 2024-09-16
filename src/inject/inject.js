@@ -57,7 +57,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 closeNode.appendChild(closeTextnode);
                 closeNode.dataset.eid = event.id;
                 closeNode.classList.add('close');
-                closeNode.addEventListener('click', function(clickEvent) {
+                closeNode.addEventListener('click', (clickEvent) => {
                     console.log("Todo5: Handling click on banner");
                     document.getElementById(clickEvent.currentTarget.dataset.eid).style.display = "none";
                     chrome.runtime.sendMessage({mute: true, eid: clickEvent.currentTarget.dataset.eid});
