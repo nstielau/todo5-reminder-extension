@@ -29,9 +29,10 @@ function fetchCalendarEvents() {
         })
         .then(response => response.json())
         .then(data => {
-            upcomingEvents = data.items.filter(event => {
+            upcomingEvents.length = 0; // Clear the array
+            upcomingEvents.push(...data.items.filter(event => {
                 return event.status !== "cancelled";
-            }).sort((a, b) => a.start.dateTime > b.start.dateTime);
+            }).sort((a, b) => a.start.dateTime > b.start.dateTime));
         })
         .catch(error => {
             console.error(error);
