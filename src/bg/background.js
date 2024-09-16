@@ -14,7 +14,7 @@ console.log("Initiating Todo5 Calendar Extension Service Worker");
 
 // Fetch calendar events using the access token
 function fetchCalendarEvents() {
-    chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
+    chrome.identity.getAuthToken({ 'interactive': true }, (token) => {
         const params = new URLSearchParams({
           singleEvents: "True",
           orderBy: "startTime",
