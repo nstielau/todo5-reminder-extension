@@ -42,7 +42,7 @@ function fetchCalendarEvents() {
 
 function notifyTabsAboutInProgressEvents() {
     const inProgressEvents = getInProgressEvents(upcomingEvents, mutedEventsIds);
-    if (inProgressEvents.length > 0) {
+    if (inProgressEvents.some(() => true)) {
         // Query all activen tabs
         chrome.tabs.query({active: true}, tabs => {
             console.log("Found these tabs", tabs);
