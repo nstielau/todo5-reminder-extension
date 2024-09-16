@@ -33,8 +33,7 @@ function fetchCalendarEvents() {
             upcomingEvents.push(...data.items.filter(event => {
                 return event.status !== "cancelled";
             }).sort((a, b) => a.start.dateTime > b.start.dateTime));
-        })
-        .catch(error => {
+        }).catch(error => {
             console.error(error);
         });
     });
@@ -70,7 +69,7 @@ function notifyTabsAboutInProgressEvents() {
 function debug() {
     console.log("Upcoming events", upcomingEvents);
     console.log("mutedEventsIds", mutedEventsIds);
-    console.log("inProgressEvents", getInProgressEvents(upcomingEvents, mutedEventsIds))
+    console.log("inProgressEvents", getInProgressEvents(upcomingEvents, mutedEventsIds));
 }
 
 // Check API for upcoming calendar events every 5 minutes

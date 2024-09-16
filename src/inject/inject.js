@@ -21,11 +21,11 @@ function todo5_header_click(event) {
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log('Todo5: Received message from background script', message)
+    console.log('Todo5: Received message from background script', message);
 
     const header = document.getElementById("todo5_header");
     if (!header) {
-        return
+        return;
     }
 
     const inProgressEvents = message['inProgressEvents'];
@@ -66,7 +66,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 eventNode.appendChild(closeNode);
                 document.getElementById("todo5_header").appendChild(eventNode);
                 document.getElementById("todo5_header").style.display = "block";
-                console.log("Todo5: Added event banner", event)
+                console.log("Todo5: Added event banner", event);
             }
         });
     }

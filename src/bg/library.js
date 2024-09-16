@@ -1,6 +1,6 @@
 export function getInProgressEvents(events, mutedEventsIds) {
-    // Look 2 mins ino the future
-    const now = new Date(Date.now() + 2*60*1000);
+    // Look 2 mins into the future
+    const now = new Date(Date.now() + 2 * 60 * 1000);
 
     return events.filter(event => {
         if (mutedEventsIds[event.id]) {
