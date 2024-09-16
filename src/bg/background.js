@@ -86,7 +86,7 @@ notifyTabsAboutInProgressEvents();
 setInterval(debug, 10*1000);
 
 chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
+  (request, sender, sendResponse) => {
     console.log(sender.tab ?
                 "Recieved message from a content script:" + sender.tab.url :
                 "Recieved message from the extension", request);
