@@ -14,13 +14,9 @@ export function getInProgressEvents(events, mutedEventsIds) {
             return false;
         }
         if (event.attendees) {
-            event.attendees.forEach((attendee, i) => {
-                if (attendee.self) {
-                    if (attendee.responseStatus == "declined") {
-                        return false;
-                    }
-                }
-            });
+            if (event.attendees.some(attendee => attendee.self && attendee.responseStatus == "declined")) {
+                return false;
+            }
         }
         const eventStartTime = new Date(event.start.dateTime);
         const eventEndTime = new Date(event.end.dateTime);
