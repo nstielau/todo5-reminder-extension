@@ -42,7 +42,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 eventNode.id = event.id;
                 eventNode.dataset.eid = event.id;
                 eventNode.appendChild(h1Node);
-                if (event.hangoutLink) {
+                if (event?.hangoutLink) {
                     const linkNode = document.createElement("a");
                     linkNode.setAttribute('target', '_blank');
                     linkNode.setAttribute('href', event.hangoutLink);
