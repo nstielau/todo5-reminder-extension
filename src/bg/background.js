@@ -57,7 +57,7 @@ function notifyTabsAboutInProgressEvents() {
                             console.log("Success messaging tab!", value);
                         },
                         function(error) {
-                            console.error("Error messaging tab, trying to reload!", error);
+                            console.warn("Could not message tab, trying to reload the tab to reconnect!", error);
                             chrome.tabs.reload(tab.id);
                         }
                     );
