@@ -4,7 +4,7 @@ let readyStateCheckInterval = setInterval(() => {
         console.log("Todo5: Calendar extension registered on this page");
         const todo5_header = document.createElement("div");
         todo5_header.id = "todo5_header";
-        todo5_header.addEventListener("dblclick", todo5_header_click);
+        todo5_header.addEventListener("dblclick", todo5HeaderClick);
         document.body.prepend(todo5_header);
     }
 }, 100);
@@ -14,7 +14,7 @@ let readyStateCheckInterval = setInterval(() => {
  *
  * @param {Event} event - The double-click event.
  */
-function todo5_header_click(event) {
+function todo5HeaderClick(event) {
 
     const header = document.getElementById('todo5_header');
     console.log("header", header, header.style.width);
