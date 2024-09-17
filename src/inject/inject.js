@@ -62,11 +62,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                     });
                     eventNode.appendChild(descriptionNode);
                 }
-                const linkNode = document.createElement("a");
-                linkNode.setAttribute('target', '_blank');
-                linkNode.setAttribute('href', event.hangoutLink);
-                linkNode.textContent = "Join Video";
-                eventNode.appendChild(linkNode);
+                if (event.hangoutLink) {
+                    const linkNode = document.createElement("a");
+                    linkNode.setAttribute('target', '_blank');
+                    linkNode.setAttribute('href', event.hangoutLink);
+                    linkNode.textContent = "Join Video";
+                    eventNode.appendChild(linkNode);
+                }
 
                 const closeNode = document.createElement("a");
                 closeNode.textContent = "Close";
