@@ -1,3 +1,8 @@
+/**
+ * @license MIT
+ * (c) 2024 Nick Stielau
+ */
+
 let readyStateCheckInterval = setInterval(() => {
     if (document.readyState === "complete") {
         clearInterval(readyStateCheckInterval);

@@ -1,4 +1,9 @@
 /**
+ * @license MIT
+ * (c) 2024 Nick Stielau
+ */
+
+/**
  * Filters and returns events that are currently in progress.
  * Excludes events that are muted, cancelled, or declined by the user.
  *

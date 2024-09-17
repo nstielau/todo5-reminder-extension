@@ -1,3 +1,8 @@
+/**
+ * @license MIT
+ * (c) 2024 Nick Stielau
+ */
+
 import { getInProgressEvents } from './library.js';
 
 // Keep service worker alive
