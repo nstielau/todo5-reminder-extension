@@ -35,6 +35,6 @@
     cursor: pointer;
 }
 
-#todo5_header a.close {
+#todo5_header a.ignore {
     float: right;
 }

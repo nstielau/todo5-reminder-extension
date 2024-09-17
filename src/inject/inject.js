@@ -71,17 +71,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                     eventNode.appendChild(linkNode);
                 }
 
-                const closeNode = document.createElement("a");
-                closeNode.textContent = "Close";
-                closeNode.dataset.eid = event.id;
-                closeNode.classList.add('close');
-                closeNode.addEventListener('click', (clickEvent) => {
+                const ignoreNode = document.createElement("a");
+                ignoreNode.textContent = "Ignore";
+                ignoreNode.dataset.eid = event.id;
+                ignoreNode.classList.add('ignore');
+                ignoreNode.addEventListener('click', (clickEvent) => {
                     console.log("Todo5: Handling click on banner");
                     document.getElementById(clickEvent.currentTarget.dataset.eid).style.display = "none";
                     chrome.runtime.sendMessage({mute: true, eid: clickEvent.currentTarget.dataset.eid});
                     return true; // makes this async
                 });
-                eventNode.appendChild(closeNode);
+                eventNode.appendChild(ignoreNode);
                 document.getElementById("todo5_header").appendChild(eventNode);
                 document.getElementById("todo5_header").style.display = "block";
                 console.log("Todo5: Added event banner", event);
