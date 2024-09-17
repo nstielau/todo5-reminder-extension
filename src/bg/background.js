@@ -51,7 +51,7 @@ function fetchCalendarEvents() {
  * Notifies active tabs about events that are currently in progress.
  * Sends a message to each tab with the list of in-progress events.
  */
-function notifyTabsAboutInProgressEvents() {
+function notifyTabs() {
     const inProgressEvents = getInProgressEvents(upcomingEvents, mutedEventsIds);
     if (inProgressEvents.some(() => true)) {
         // Query all activen tabs
@@ -61,7 +61,8 @@ function notifyTabsAboutInProgressEvents() {
                 if (tab.url?.startsWith("http")) {  // Only message tabs with HTTP/HTTPS URLs
                     console.log(`Sending to tab '${tab.title}'`);
                     chrome.tabs.sendMessage(tab.id, {
-                        inProgressEvents: inProgressEvents
+                        inProgressEvents: inProgressEvents,
+                        mutedEventsIds: mutedEventsIds
                     }).then(
                         function(value) {
                             console.log("Success messaging tab!", value);
@@ -91,8 +92,8 @@ setInterval(fetchCalendarEvents, 5*60*1000);
 fetchCalendarEvents();
 
 // Check for in progress events every 10 seconds
-setInterval(notifyTabsAboutInProgressEvents, 10*1000);
-notifyTabsAboutInProgressEvents();
+setInterval(notifyTabs, 10*1000);
+notifyTabs();
 
 // Print Debug info periodically
 setInterval(debug, 10*1000);

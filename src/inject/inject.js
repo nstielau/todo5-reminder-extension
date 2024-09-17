@@ -40,13 +40,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return;
     }
 
-    const inProgressEvents = message['inProgressEvents'];
+    const inProgressEvents = message['inProgressEvents'] || {};
+    const mutedEventsIds = message['mutedEventsIds'] || {};
 
-    removeOldReminders(inProgressEvents);
+    cleanReminderBanners(inProgressEvents, mutedEventsIds);
 
     if (inProgressEvents && inProgressEvents.length > 0) {
         inProgressEvents.forEach(event => {
-            if (!document.getElementById(event.id)) {
+            if (!document.getElementById(event.id) && !mutedEventsIds[event.id]) {
                 const eventNode = document.createElement("div");
                 const h1Node = document.createElement("h1");
                 h1Node.textContent = event.summary;
@@ -91,11 +92,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 
 /**
- * Removes reminders for events that are no longer in progress.
+ * Cleans up reminder banners for events that are no longer in progress or are muted.
  *
  * @param {Array} events - List of in-progress events.
+ * @param {Object} mutedEventsIds - Dictionary of muted event IDs.
  */
-function removeOldReminders(events) {
+function cleanReminderBanners(events, mutedEventsIds) {
   const inProgressEventsIdDict = {};
   for (const event of events) {
     if (event.hasOwnProperty('id')) {
@@ -107,6 +109,10 @@ function removeOldReminders(events) {
   Array.from(elements).forEach(element => {
     if (!inProgressEventsIdDict[element.dataset.eid]) {
       console.log("Removing stale reminder", element.dataset.eid);
+      element.parentNode.removeChild(element);
+    }
+    if (mutedEventsIds[element.dataset.eid]) {
+      console.log("Removing muted reminder", element.dataset.eid);
       element.parentNode.removeChild(element);
     }
   });

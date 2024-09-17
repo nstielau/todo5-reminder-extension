@@ -11,9 +11,6 @@ export function getInProgressEvents(events, mutedEventsIds) {
     const now = new Date(Date.now() + 2 * 60 * 1000);
 
     return events.filter(event => {
-        if (mutedEventsIds[event.id]) {
-            return false;
-        }
         if (event.status == "cancelled") {
             return false;
         }
