@@ -56,7 +56,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 eventNode.appendChild(h1Node);
                 if (event.description) {
                     const descriptionNode = document.createElement("p");
-                    descriptionNode.innerHTML = event.description.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+                    descriptionNode.innerHTML = event.description.replace(/(https?:\/\/[^\s<]+)/g, (url) => {
+                        // Check if the URL is already part of an <a> tag
+                        return event.description.includes(`<a href="${url}`) ? url : `<a href="${url}" target="_blank">${url}</a>`;
+                    });
                     eventNode.appendChild(descriptionNode);
                 }
                 const linkNode = document.createElement("a");
