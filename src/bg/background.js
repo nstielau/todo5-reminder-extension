@@ -5,10 +5,9 @@
 
 import { getInProgressEvents } from './library.js';
 
-// Keep service worker alive
-// (see https://stackoverflow.com/questions/66618136/persistent-service-worker-in-chrome-extension)
 /**
  * Keeps the service worker alive by periodically calling a Chrome API.
+ * See https://stackoverflow.com/questions/66618136/persistent-service-worker-in-chrome-extension
  */
 const keepAlive = () => setInterval(chrome.runtime.getPlatformInfo, 20e3);
 chrome.runtime.onStartup.addListener(keepAlive);
@@ -20,7 +19,6 @@ const mutedEventsIds = {};
 
 console.log("Initiating Todo5 Calendar Extension Service Worker");
 
-// Fetch calendar events using the access token
 /**
  * Fetches upcoming calendar events using the Google Calendar API.
  * Updates the list of upcoming events.
