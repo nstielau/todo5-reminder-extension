@@ -77,7 +77,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 }
 
                 const ignoreNode = document.createElement("a");
-                ignoreNode.textContent = "Ignore";
+                ignoreNode.textContent = chrome.i18n.getMessage("ignoreText");
                 ignoreNode.dataset.eid = event.id;
                 ignoreNode.classList.add('ignore');
                 ignoreNode.addEventListener('click', (clickEvent) => {
