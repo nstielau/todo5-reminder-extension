@@ -55,7 +55,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             if (!document.getElementById(event.id) && !mutedEventsIds[event.id]) {
                 const eventNode = document.createElement("div");
                 const h1Node = document.createElement("h1");
-                h1Node.textContent = event.summary;
+                h1Node.innerHTML = event.summary.replace(/(https?:\/\/[^\s<]+)/g, (url) => {
+                    return `<a href="${url}" target="_blank">${url}</a>`;
+                });
                 eventNode.classList.add('todo5_event');
                 eventNode.id = event.id;
                 eventNode.dataset.eid = event.id;
@@ -87,6 +89,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                     return true; // makes this async
                 });
                 eventNode.appendChild(ignoreNode);
+
+                if (!event.attendees || event.attendees.length === 1) {
+                    const focusNode = document.createElement("a");
+                    focusNode.textContent = "Focus";
+                    focusNode.dataset.eid = event.id;
+                    focusNode.classList.add('focus');
+                    focusNode.addEventListener('click', (clickEvent) => {
+                        console.log("Todo5: Focus mode activated");
+                        const eventElement = document.getElementById(clickEvent.currentTarget.dataset.eid);
+                        eventElement.querySelector('.ignore').style.display = "none";
+                    });
+                    eventNode.appendChild(focusNode);
+                }
                 document.getElementById("todo5_header").appendChild(eventNode);
                 document.getElementById("todo5_header").style.display = "block";
                 console.log("Todo5: Added event banner", event);
