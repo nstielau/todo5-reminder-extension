@@ -53,55 +53,77 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (inProgressEvents && inProgressEvents.length > 0) {
         inProgressEvents.forEach(event => {
             if (!document.getElementById(event.id) && !mutedEventsIds[event.id]) {
-                const eventNode = document.createElement("div");
+                const eventNode = document.createElement("article");
+                eventNode.classList.add('card', 'todo5_event');
+                eventNode.id = event.id;
+                eventNode.dataset.eid = event.id;
+
+                const headerNode = document.createElement("header");
+                headerNode.classList.add('flex', 'five');
+
+                const titleDiv = document.createElement("div");
+                titleDiv.classList.add('four-fifth');
                 const h1Node = document.createElement("h1");
                 h1Node.innerHTML = event.summary.replace(/(https?:\/\/[^\s<]+)/g, (url) => {
                     return `<a href="${url}" target="_blank">${url}</a>`;
                 });
-                eventNode.classList.add('todo5_event');
-                eventNode.id = event.id;
-                eventNode.dataset.eid = event.id;
-                eventNode.appendChild(h1Node);
-                if (event.description) {
-                    const descriptionNode = document.createElement("p");
-                    descriptionNode.innerHTML = event.description.replace(/(https?:\/\/[^\s<]+)/g, (url) => {
-                        // Check if the URL is already part of an <a> tag
-                        return event.description.includes(`<a href="${url}`) ? url : `<a href="${url}" target="_blank">${url}</a>`;
-                    });
-                    eventNode.appendChild(descriptionNode);
-                }
+                titleDiv.appendChild(h1Node);
+                headerNode.appendChild(titleDiv);
+
+                const buttonDiv = document.createElement("div");
+                buttonDiv.classList.add('fifth');
+
                 if (event.hangoutLink) {
-                    const linkNode = document.createElement("a");
-                    linkNode.setAttribute('target', '_blank');
-                    linkNode.setAttribute('href', event.hangoutLink);
-                    linkNode.textContent = "Join Video";
-                    eventNode.appendChild(linkNode);
+                    const linkButton = document.createElement("button");
+                    linkButton.textContent = "Join Video";
+                    linkButton.addEventListener('click', () => {
+                        window.open(event.hangoutLink, '_blank');
+                    });
+                    linkButton.classList.add('right');
+                    buttonDiv.appendChild(linkButton);
                 }
 
-                const ignoreNode = document.createElement("a");
-                ignoreNode.textContent = chrome.i18n.getMessage("ignoreText");
-                ignoreNode.dataset.eid = event.id;
-                ignoreNode.classList.add('ignore');
-                ignoreNode.addEventListener('click', (clickEvent) => {
+                const ignoreButton = document.createElement("button");
+                ignoreButton.textContent = chrome.i18n.getMessage("ignoreText");
+                ignoreButton.dataset.eid = event.id;
+                ignoreButton.classList.add('ignore');
+                ignoreButton.addEventListener('click', (clickEvent) => {
                     console.log("Todo5: Handling click on banner");
                     document.getElementById(clickEvent.currentTarget.dataset.eid).style.display = "none";
                     chrome.runtime.sendMessage({mute: true, eid: clickEvent.currentTarget.dataset.eid});
                     return true; // makes this async
                 });
-                eventNode.appendChild(ignoreNode);
+                ignoreButton.classList.add('right');
+                buttonDiv.appendChild(ignoreButton);
 
                 if (!event.attendees || event.attendees.length === 1) {
-                    const focusNode = document.createElement("a");
-                    focusNode.textContent = "Focus";
-                    focusNode.dataset.eid = event.id;
-                    focusNode.classList.add('focus');
-                    focusNode.addEventListener('click', (clickEvent) => {
+                    const focusButton = document.createElement("button");
+                    focusButton.textContent = "Focus";
+                    focusButton.dataset.eid = event.id;
+                    focusButton.classList.add('focus');
+                    focusButton.addEventListener('click', (clickEvent) => {
                         console.log("Todo5: Focus mode activated");
                         const eventElement = document.getElementById(clickEvent.currentTarget.dataset.eid);
                         eventElement.querySelector('.ignore').style.display = "none";
                     });
-                    eventNode.appendChild(focusNode);
+                    focusButton.classList.add('right');
+                    buttonDiv.appendChild(focusButton);
                 }
+
+                headerNode.appendChild(buttonDiv);
+
+                eventNode.appendChild(headerNode);
+
+                if (event.description) {
+                    const footerNode = document.createElement("footer");
+                    const descriptionNode = document.createElement("p");
+                    descriptionNode.innerHTML = event.description.replace(/(https?:\/\/[^\s<]+)/g, (url) => {
+                        return event.description.includes(`<a href="${url}`) ? url : `<a href="${url}" target="_blank">${url}</a>`;
+                    });
+                    footerNode.appendChild(descriptionNode);
+                    eventNode.appendChild(footerNode);
+                }
+
                 document.getElementById("todo5_header").appendChild(eventNode);
                 document.getElementById("todo5_header").style.display = "block";
                 console.log("Todo5: Added event banner", event);
