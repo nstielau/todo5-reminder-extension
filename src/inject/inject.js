@@ -116,7 +116,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
                 if (event.description) {
                     const footerNode = document.createElement("footer");
-                    const descriptionNode = document.createElement("p");
+                    const descriptionNode = document.createElement("pre");
                     descriptionNode.innerHTML = event.description.replace(/(https?:\/\/[^\s<]+)/g, (url) => {
                         return event.description.includes(`<a href="${url}`) ? url : `<a href="${url}" target="_blank">${url}</a>`;
                     });

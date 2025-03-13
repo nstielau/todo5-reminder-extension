@@ -5585,6 +5585,10 @@
 #todo5_header .todo5_event button {
   margin: 0 0.3em;
 }
+#todo5_header .todo5_event pre {
+  font-family: "Google Sans", "Roboto", "RobotoDraft", "Helvetica", "Arial", sans-serif;
+  background-color: rgba(0, 0, 0, 0);
+}
 #todo5_header .todo5_event h1 {
   color: #555;
   font-size: 1.875rem;
