@@ -101,39 +101,52 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                     buttonDiv.appendChild(linkButton);
                 }
 
-                if (event.ignorable) {
-                    const ignoreButton = document.createElement("button");
-                    ignoreButton.textContent = chrome.i18n.getMessage("ignoreText");
-                    ignoreButton.dataset.eid = event.id;
-                    ignoreButton.classList.add('ignore');
-                    ignoreButton.addEventListener('click', (clickEvent) => {
-                        console.log("Todo5: Handling click on banner");
-                        document.getElementById(clickEvent.currentTarget.dataset.eid).style.display = "none";
-                        chrome.runtime.sendMessage({mute: true, eid: clickEvent.currentTarget.dataset.eid});
-                        return true; // makes this async
+                if (event.attachments) {
+                    event.attachments.forEach(attachment => {
+                        if (attachment.mimeType === "application/vnd.google-apps.document") {
+                            const notesButton = document.createElement("button");
+                            notesButton.textContent = "Meeting Notes";
+                            notesButton.addEventListener('click', () => {
+                                window.open(attachment.fileUrl, '_blank');
+                            });
+                            notesButton.classList.add('right');
+                            buttonDiv.appendChild(notesButton);
+                        }
                     });
-                    ignoreButton.classList.add('right');
-                    buttonDiv.appendChild(ignoreButton);
-
-                    if (!event.attendees || event.attendees.length === 1) {
-                        const focusButton = document.createElement("button");
-                        focusButton.textContent = "Focus";
-                        focusButton.dataset.eid = event.id;
-                        focusButton.classList.add('focus');
-                        focusButton.addEventListener('click', (clickEvent) => {
-                            console.log("Todo5: Focus mode activated");
-                            const eventElement = document.getElementById(clickEvent.currentTarget.dataset.eid);
-                            eventElement.querySelector('.ignore').style.display = "none";
-                        });
-                        focusButton.classList.add('right');
-                        buttonDiv.appendChild(focusButton);
-                    }
-                } else {
-                    const cannotIgnoreButton = document.createElement("button");
-                    cannotIgnoreButton.textContent = "Cannot Ignore";
-                    cannotIgnoreButton.classList.add('right');
-                    buttonDiv.appendChild(cannotIgnoreButton);
                 }
+                    if (event.ignorable) {
+                        const ignoreButton = document.createElement("button");
+                        ignoreButton.textContent = chrome.i18n.getMessage("ignoreText");
+                        ignoreButton.dataset.eid = event.id;
+                        ignoreButton.classList.add('ignore');
+                        ignoreButton.addEventListener('click', (clickEvent) => {
+                            console.log("Todo5: Handling click on banner");
+                            document.getElementById(clickEvent.currentTarget.dataset.eid).style.display = "none";
+                            chrome.runtime.sendMessage({mute: true, eid: clickEvent.currentTarget.dataset.eid});
+                            return true; // makes this async
+                        });
+                        ignoreButton.classList.add('right');
+                        buttonDiv.appendChild(ignoreButton);
+
+                        if (!event.attendees || event.attendees.length === 1) {
+                            const focusButton = document.createElement("button");
+                            focusButton.textContent = "Focus";
+                            focusButton.dataset.eid = event.id;
+                            focusButton.classList.add('focus');
+                            focusButton.addEventListener('click', (clickEvent) => {
+                                console.log("Todo5: Focus mode activated");
+                                const eventElement = document.getElementById(clickEvent.currentTarget.dataset.eid);
+                                eventElement.querySelector('.ignore').style.display = "none";
+                            });
+                            focusButton.classList.add('right');
+                            buttonDiv.appendChild(focusButton);
+                        }
+                    } else {
+                        const cannotIgnoreButton = document.createElement("button");
+                        cannotIgnoreButton.textContent = "Cannot Ignore";
+                        cannotIgnoreButton.classList.add('right');
+                        buttonDiv.appendChild(cannotIgnoreButton);
+                    }
 
                 headerNode.appendChild(buttonDiv);
 
