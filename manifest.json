@@ -17,9 +17,11 @@
   "permissions": [
     "notifications",
     "tabs",
-    "identity"
+    "identity",
+    "storage"
   ],
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtT/q/42O8UfvqqKsqbUd6fE7JF3c2lZjdKRGtxd5mWi3jm1NN5Z8XP+X7G8S9kKyO7MdHYaxzHyOizY20BCIFx/YHvUSz2r9GjWiI3bB+JrYO+kwZ+OZWSz/Rj+if75cPKxPRHGYZ0VsSx6eDRuhHqb9eAFJ9Gf/J4+HYXqQtEPRON7i/pTA9ugFDBLzcQ8KxOJRisLcHZOBt+8UbPE4RBSyKciHLF8S9inMjTqLE3B6hJjbSaH0iUmxEL82y/UI94YD/ILSz4jRP2cq0QzxNlWKZRAGZc9SN0wT97T9Wqjs+zHZQxBkpKJdfaczZmMoTkVKt20UjM/07RbYDr2r4wIDAQAB",
+  "options_page": "src/settings/settings.html",
   "action": {
     "default_popup": "src/page_action/page_action.html",
     "default_icon": {

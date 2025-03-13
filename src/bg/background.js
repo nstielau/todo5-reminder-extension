@@ -25,26 +25,34 @@ console.log("Initiating Todo5 Calendar Extension Service Worker");
  */
 function fetchCalendarEvents() {
     chrome.identity.getAuthToken({ 'interactive': true }, (token) => {
-        const params = new URLSearchParams({
-          singleEvents: "True",
-          orderBy: "startTime",
-          timeMin: new Date().toISOString(),
-          timeMax: new Date(Date.now() + 60*60*24*1000).toISOString()
-        });
-        const apiUrl = `https://www.googleapis.com/calendar/v3/calendars/primary/events?${params.toString()}`;
-        fetch(apiUrl, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        })
-        .then(response => response.json())
-        .then(data => {
+        chrome.storage.sync.get('calendarIds', (data) => {
+            const calendarIds = ['primary', ...(data.calendarIds || [])];
+            const params = new URLSearchParams({
+              singleEvents: "True",
+              orderBy: "startTime",
+              timeMin: new Date().toISOString(),
+              timeMax: new Date(Date.now() + 60*60*24*1000).toISOString()
+            });
+
             upcomingEvents.length = 0; // Clear the array
-            upcomingEvents.push(...data.items.filter(event => {
-                return event.status !== "cancelled";
-            }).sort((a, b) => a.start.dateTime > b.start.dateTime));
-        }).catch(error => {
-            console.error(error);
+
+            calendarIds.forEach(calendarId => {
+                const apiUrl = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?${params.toString()}`;
+                fetch(apiUrl, {
+                  headers: {
+                    'Authorization': `Bearer ${token}`
+                  }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    upcomingEvents.push(...data.items.filter(event => {
+                        console.log(event.summary + " :" + calendarId);
+                        return event.status !== "cancelled";
+                    }).sort((a, b) => a.start.dateTime > b.start.dateTime));
+                }).catch(error => {
+                    console.error(`Error fetching events for calendar ${calendarId}:`, error);
+                });
+            });
         });
     });
 }
