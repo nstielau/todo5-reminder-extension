@@ -42,8 +42,8 @@ function getColorMappings(token) {
 
 function fetchCalendarEvents() {
     chrome.identity.getAuthToken({ 'interactive': true }, (token) => {
-        chrome.storage.sync.get('calendarIds', (data) => {
-            const calendarIds = ['primary', ...(data.calendarIds || [])];
+        chrome.storage.sync.get('calendarIds', (calendarIdsStorageResponse) => {
+            const calendarIds = ['primary', ...(calendarIdsStorageResponse.calendarIds || [])];
             const params = new URLSearchParams({
               singleEvents: "True",
               orderBy: "startTime",
@@ -62,14 +62,18 @@ function fetchCalendarEvents() {
                         }
                     })
                     .then(response => response.json())
-                    .then(data => {
-                        upcomingEvents.push(...data.items.filter(event => {
-                            console.log(event.summary + " :" + calendarId);
-                            return event.status !== "cancelled";
-                        }).map(event => {
-                            event.colorValue = colorMappings[event.colorId];
-                            return event;
-                        }).sort((a, b) => a.start.dateTime > b.start.dateTime));
+                    .then(eventData => {
+                        chrome.storage.sync.get('nonIgnoreableEventSubstrings', (ignorableEventData) => {
+                            const nonIgnoreableEventSubstrings = ignorableEventData.nonIgnoreableEventSubstrings || [];
+                            upcomingEvents.push(...eventData.items.filter(event => {
+                                console.log(event.summary + " :" + calendarId);
+                                return event.status !== "cancelled";
+                            }).map(event => {
+                                event.colorValue = colorMappings[event.colorId];
+                                event.ignorable = !nonIgnoreableEventSubstrings.some(substring => event.summary.includes(substring));
+                                return event;
+                            }).sort((a, b) => a.start.dateTime > b.start.dateTime));
+                        });
                     }).catch(error => {
                         console.error(`Error fetching events for calendar ${calendarId}:`, error);
                     });

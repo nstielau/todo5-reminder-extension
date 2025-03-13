@@ -9,7 +9,15 @@
 document.addEventListener('DOMContentLoaded', function () {
     if (typeof chrome !== 'undefined' && chrome.storage) {
         const calendarIdsTextarea = document.getElementById('calendarIds');
+        const nonIgnoreableEventSubstringsTextarea = document.getElementById('nonIgnoreableEventSubstrings');
         const saveButton = document.getElementById('saveButton');
+
+        // Load saved non-ignorable events
+        chrome.storage.sync.get('nonIgnoreableEventSubstrings', (data) => {
+            if (data.nonIgnoreableEventSubstrings) {
+                nonIgnoreableEventSubstringsTextarea.value = data.nonIgnoreableEventSubstrings.join('\n');
+            }
+        });
 
         // Load saved calendar IDs
         chrome.storage.sync.get('calendarIds', (data) => {
@@ -21,8 +29,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Save calendar IDs
         saveButton.addEventListener('click', () => {
             const calendarIds = calendarIdsTextarea.value.split('\n').map(id => id.trim()).filter(id => id);
-            chrome.storage.sync.set({ calendarIds }, () => {
-                alert('Calendar IDs saved!');
+            const nonIgnoreableEventSubstrings = nonIgnoreableEventSubstringsTextarea.value.split('\n').map(event => event.trim()).filter(event => event);
+            chrome.storage.sync.set({ calendarIds, nonIgnoreableEventSubstrings }, () => {
+                alert('Settings saved!');
             });
         });
     } else {

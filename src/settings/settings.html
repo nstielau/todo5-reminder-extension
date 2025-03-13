@@ -16,6 +16,10 @@
             font-family: Helvetica, Ubuntu, Arial, sans-serif;
             padding: 20px;
         }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
         input[type="text"] {
             width: 80%;
             padding: 5px;
@@ -27,10 +31,15 @@
     </style>
 </head>
 <body>
-    <h1>Todo5 Settings</h1>
-    <p>Enter additional calendar IDs (one per line):</p>
-    <textarea id="calendarIds" rows="10" style="width: 100%;"></textarea>
-    <button id="saveButton">Save</button>
+    <div class="container">
+        <h1>Todo5 Settings</h1>
+        <p>Enter additional calendar IDs (one per line):</p>
+        <textarea id="calendarIds" rows="10" style="width: 100%;"></textarea>
+        <p>Enter non-ignorable event summaries (one per line):</p>
+        <p>These are substrings that, if found in an event's summary, will prevent the ignore button from appearing.</p>
+        <textarea id="nonIgnoreableEventSubstrings" rows="5" style="width: 100%;"></textarea>
+        <button id="saveButton">Save</button>
+    </div>
 
     <script src="settings.js"></script>
 </body>
