@@ -1,0 +1,37 @@
+<!--
+    @license MIT
+    (c) 2024 Nick Stielau
+
+    This file is part of the Todo5 Reminder extension.
+    Licensed under the MIT License.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo5 Settings</title>
+    <style>
+        body {
+            font-family: Helvetica, Ubuntu, Arial, sans-serif;
+            padding: 20px;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Todo5 Settings</h1>
+    <p>Enter additional calendar IDs (one per line):</p>
+    <textarea id="calendarIds" rows="10" style="width: 100%;"></textarea>
+    <button id="saveButton">Save</button>
+
+    <script src="settings.js"></script>
+</body>
+</html>
