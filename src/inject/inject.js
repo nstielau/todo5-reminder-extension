@@ -6,6 +6,18 @@
  * Licensed under the MIT License.
  */
 
+function hexToRgba(hex, alpha) {
+    if (typeof hex === 'string') {
+        let r = parseInt(hex.slice(1, 3), 16);
+        let g = parseInt(hex.slice(3, 5), 16);
+        let b = parseInt(hex.slice(5, 7), 16);
+
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+    return null;
+
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
 let readyStateCheckInterval = setInterval(() => {
     if (document.readyState === "complete") {
         clearInterval(readyStateCheckInterval);
@@ -60,6 +72,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 eventNode.classList.add('card', 'todo5_event');
                 eventNode.id = event.id;
                 eventNode.dataset.eid = event.id;
+                if (event.colorValue) {
+                    eventNode.style.backgroundColor = hexToRgba(event.colorValue.background, 0.5);
+                }
 
                 const headerNode = document.createElement("header");
                 headerNode.classList.add('flex', 'five');

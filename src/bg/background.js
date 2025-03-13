@@ -26,6 +26,20 @@ console.log("Initiating Todo5 Calendar Extension Service Worker");
  * Fetches upcoming calendar events using the Google Calendar API.
  * Updates the list of upcoming events.
  */
+function getColorMappings(token) {
+    return fetch('https://www.googleapis.com/calendar/v3/colors', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(data => data.event || {})
+    .catch(error => {
+        console.error('Error fetching color mappings:', error);
+        return {};
+    });
+}
+
 function fetchCalendarEvents() {
     chrome.identity.getAuthToken({ 'interactive': true }, (token) => {
         chrome.storage.sync.get('calendarIds', (data) => {
@@ -39,21 +53,26 @@ function fetchCalendarEvents() {
 
             upcomingEvents.length = 0; // Clear the array
 
-            calendarIds.forEach(calendarId => {
-                const apiUrl = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?${params.toString()}`;
-                fetch(apiUrl, {
-                  headers: {
-                    'Authorization': `Bearer ${token}`
-                  }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    upcomingEvents.push(...data.items.filter(event => {
-                        console.log(event.summary + " :" + calendarId);
-                        return event.status !== "cancelled";
-                    }).sort((a, b) => a.start.dateTime > b.start.dateTime));
-                }).catch(error => {
-                    console.error(`Error fetching events for calendar ${calendarId}:`, error);
+            getColorMappings(token).then(colorMappings => {
+                calendarIds.forEach(calendarId => {
+                    const apiUrl = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?${params.toString()}`;
+                    fetch(apiUrl, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        upcomingEvents.push(...data.items.filter(event => {
+                            console.log(event.summary + " :" + calendarId);
+                            return event.status !== "cancelled";
+                        }).map(event => {
+                            event.colorValue = colorMappings[event.colorId];
+                            return event;
+                        }).sort((a, b) => a.start.dateTime > b.start.dateTime));
+                    }).catch(error => {
+                        console.error(`Error fetching events for calendar ${calendarId}:`, error);
+                    });
                 });
             });
         });
