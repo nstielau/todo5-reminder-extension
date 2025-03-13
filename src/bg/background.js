@@ -1,6 +1,9 @@
 /**
  * @license MIT
  * (c) 2024 Nick Stielau
+ * 
+ * This file is part of the Todo5 Reminder extension.
+ * Licensed under the MIT License.
  */
 
 import { getInProgressEvents } from './library.js';
